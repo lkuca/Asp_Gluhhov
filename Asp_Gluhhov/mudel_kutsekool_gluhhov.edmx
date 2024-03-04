@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="mudel_kutsekool_gluhhov.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Opilanes">
+          <Key>
+            <PropertyRef Name="opilaneid" />
+          </Key>
+          <Property Name="opilaneid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nimi" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="perekonnanimi" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="synniaeg" Type="datetime" Nullable="false" />
+          <Property Name="Ryhm_ryhmid" Type="int" Nullable="false" />
+          <Property Name="keskhinne" Type="decimal" Precision="3" Scale="1" />
+        </EntityType>
+        <EntityType Name="Ryhms">
+          <Key>
+            <PropertyRef Name="ryhmid" />
+          </Key>
+          <Property Name="ryhmid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ryhmnimi" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="osakond" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_RyhmOpilane">
+          <End Role="Ryhms" Type="Self.Ryhms" Multiplicity="1" />
+          <End Role="Opilanes" Type="Self.Opilanes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ryhms">
+              <PropertyRef Name="ryhmid" />
+            </Principal>
+            <Dependent Role="Opilanes">
+              <PropertyRef Name="Ryhm_ryhmid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="mudel_kutsekool_gluhhovStoreContainer">
+          <EntitySet Name="Opilanes" EntityType="Self.Opilanes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ryhms" EntityType="Self.Ryhms" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_RyhmOpilane" Association="Self.FK_RyhmOpilane">
+            <End Role="Ryhms" EntitySet="Ryhms" />
+            <End Role="Opilanes" EntitySet="Opilanes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="mudel_kutsekool_gluhhov" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="mudel_kutsekool_gluhhovContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Opilanes" EntityType="mudel_kutsekool_gluhhov.Opilane" />
+          <EntitySet Name="Ryhms" EntityType="mudel_kutsekool_gluhhov.Ryhm" />
+          <AssociationSet Name="RyhmOpilane" Association="mudel_kutsekool_gluhhov.RyhmOpilane">
+            <End Role="Ryhm" EntitySet="Ryhms" />
+            <End Role="Opilane" EntitySet="Opilanes" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Opilane">
+          <Key>
+            <PropertyRef Name="opilaneid" />
+          </Key>
+          <Property Name="opilaneid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nimi" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="perekonnanimi" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="synniaeg" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Ryhm" Relationship="mudel_kutsekool_gluhhov.RyhmOpilane" FromRole="Opilane" ToRole="Ryhm" />
+          <Property Name="keskhinne" Type="Decimal" Precision="3" Scale="1" />
+        </EntityType>
+        <EntityType Name="Ryhm">
+          <Key>
+            <PropertyRef Name="ryhmid" />
+          </Key>
+          <Property Name="ryhmid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ryhmnimi" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="osakond" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Opilanes" Relationship="mudel_kutsekool_gluhhov.RyhmOpilane" FromRole="Ryhm" ToRole="Opilane" />
+        </EntityType>
+        <Association Name="RyhmOpilane">
+          <End Type="mudel_kutsekool_gluhhov.Ryhm" Role="Ryhm" Multiplicity="1" />
+          <End Type="mudel_kutsekool_gluhhov.Opilane" Role="Opilane" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="mudel_kutsekool_gluhhovStoreContainer" CdmEntityContainer="mudel_kutsekool_gluhhovContainer">
+    <EntitySetMapping Name="Opilanes">
+      <EntityTypeMapping TypeName="IsTypeOf(mudel_kutsekool_gluhhov.Opilane)">
+        <MappingFragment StoreEntitySet="Opilanes">
+          <ScalarProperty Name="keskhinne" ColumnName="keskhinne" />
+                <ScalarProperty Name="opilaneid" ColumnName="opilaneid" />
+          <ScalarProperty Name="nimi" ColumnName="nimi" />
+          <ScalarProperty Name="perekonnanimi" ColumnName="perekonnanimi" />
+          <ScalarProperty Name="synniaeg" ColumnName="synniaeg" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Ryhms">
+      <EntityTypeMapping TypeName="IsTypeOf(mudel_kutsekool_gluhhov.Ryhm)">
+        <MappingFragment StoreEntitySet="Ryhms">
+          <ScalarProperty Name="ryhmid" ColumnName="ryhmid" />
+          <ScalarProperty Name="ryhmnimi" ColumnName="ryhmnimi" />
+          <ScalarProperty Name="osakond" ColumnName="osakond" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="RyhmOpilane" TypeName="mudel_kutsekool_gluhhov.RyhmOpilane" StoreEntitySet="Opilanes">
+      <EndProperty Name="Ryhm">
+        <ScalarProperty Name="ryhmid" ColumnName="Ryhm_ryhmid" />
+      </EndProperty>
+      <EndProperty Name="Opilane">
+        <ScalarProperty Name="opilaneid" ColumnName="opilaneid" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
